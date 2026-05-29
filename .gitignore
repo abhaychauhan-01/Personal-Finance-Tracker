@@ -1,0 +1,6 @@
+finance-frontend/node_modules/
+server/node_modules/
+
+finance-frontend/dist/
+
+server/.env
