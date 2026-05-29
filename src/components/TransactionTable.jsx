@@ -77,7 +77,7 @@ const TransactionTable = ({ onEdit }) => {
           <tbody>
             {filteredTransactions.length > 0 ? (
               filteredTransactions.map((t) => (
-                <tr key={t.id} className="border-b border-gray-50 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
+                <tr key={t._id||t.id} className="border-b border-gray-50 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
                   <td className="p-4 text-sm text-gray-600 dark:text-gray-300">{t.date}</td>
                   <td className="p-4 text-sm text-gray-800 dark:text-gray-100 font-medium">{t.category}</td>
                   <td className="p-4 text-sm capitalize">
@@ -93,7 +93,7 @@ const TransactionTable = ({ onEdit }) => {
                   {role === 'admin' && (
                     <td className="p-4 text-sm text-center space-x-3">
                       <button onClick={() => onEdit(t)} className="text-blue-500 hover:text-blue-700 dark:text-blue-400 font-medium">Edit</button>
-                      <button onClick={() => initiateDelete(t.id)} className="text-red-500 hover:text-red-700 dark:text-red-400 font-medium transition-colors">Delete</button>
+                      <button onClick={() => initiateDelete(t._id||t.id)} className="text-red-500 hover:text-red-700 dark:text-red-400 font-medium transition-colors">Delete</button>
                     </td>
                   )}
                 </tr>

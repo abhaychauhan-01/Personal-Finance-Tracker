@@ -22,24 +22,26 @@ const AddTransactionModal = ({ isOpen, onClose, transactionToEdit }) => {
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async(e) => {
     e.preventDefault();
     if (!formData.date || !formData.amount || !formData.category) return;
 
     if (transactionToEdit) {
       // UPDATE LOGIC
-      updateTransaction({ ...formData, amount: parseFloat(formData.amount) });
-      toast.success("Transaction updated!");
+      await updateTransaction({
+  ...transactionToEdit,
+  ...formData,
+  amount: parseFloat(formData.amount),
+});
     } else {
       // CREATE LOGIC
-      addTransaction({
-        id: Date.now().toString(),
-        date: formData.date,
-        amount: parseFloat(formData.amount),
-        category: formData.category,
-        type: formData.type
-      });
-      toast.success("Transaction added!");
+      await addTransaction({
+  title: formData.category,
+  category: formData.category,
+  amount: parseFloat(formData.amount),
+  type: formData.type,
+  date: formData.date,
+});
     }
     
     // Close modal after saving

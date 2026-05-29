@@ -1,50 +1,128 @@
-import { createContext, useState, useContext, useEffect } from 'react';
-import { initialTransactions } from '../data/mockData';
+import { createContext, useState, useContext, useEffect } from "react";
+import { useAuth } from "./AuthContext";
+import {
+  getTransactions,
+  createTransaction,
+  updateTransactionApi,
+  deleteTransactionApi,
+} from "../api/transactionApi";
 
 const FinanceContext = createContext();
 
 export const FinanceProvider = ({ children }) => {
-  const [transactions, setTransactions] = useState(() => {
-    const savedData = localStorage.getItem('finance_transactions');
-    return savedData ? JSON.parse(savedData) : initialTransactions;
-  });
+  const { user } = useAuth();
 
-  const [role, setRole] = useState(() => localStorage.getItem('finance_role') || 'viewer');
-  
-  const [theme, setTheme] = useState(() => localStorage.getItem('finance_theme') || 'light');
+  const [transactions, setTransactions] = useState([]);
 
-  useEffect(() => { localStorage.setItem('finance_transactions', JSON.stringify(transactions)); }, [transactions]);
-  useEffect(() => { localStorage.setItem('finance_role', role); }, [role]);
-  
-  // Theme Watcher
+  const [role, setRole] = useState(
+    localStorage.getItem("finance_role") || "admin"
+  );
+
+  const [theme, setTheme] = useState(
+    localStorage.getItem("finance_theme") || "light"
+  );
+
+  // Fetch transactions whenever logged-in user changes
   useEffect(() => {
-    localStorage.setItem('finance_theme', theme);
-    if (theme === 'dark') {
-      document.documentElement.classList.add('dark');
+    fetchTransactions();
+  }, [user]);
+
+  const fetchTransactions = async () => {
+    try {
+      if (!user) {
+        setTransactions([]);
+        return;
+      }
+
+      const data = await getTransactions();
+      setTransactions(data);
+    } catch (error) {
+      console.log("Fetch Transactions Error:", error);
+      setTransactions([]);
+    }
+  };
+
+  // Save role
+  useEffect(() => {
+    localStorage.setItem("finance_role", role);
+  }, [role]);
+
+  // Save theme
+  useEffect(() => {
+    localStorage.setItem("finance_theme", theme);
+
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
     }
   }, [theme]);
 
-  const addTransaction = (newTx) => setTransactions([newTx, ...transactions]);
-  
-  // Delete and Update Functions
-  const deleteTransaction = (id) => {
-    setTransactions(transactions.filter(t => t.id !== id));
+  // Add Transaction
+  const addTransaction = async (newTx) => {
+    try {
+      const created = await createTransaction(newTx);
+
+      setTransactions((prev) => [
+        created,
+        ...prev,
+      ]);
+    } catch (error) {
+      console.log("Add Transaction Error:", error);
+    }
   };
 
-  const updateTransaction = (updatedTx) => {
-    setTransactions(transactions.map(t => t.id === updatedTx.id ? updatedTx : t));
+  // Update Transaction
+  const updateTransaction = async (updatedTx) => {
+    try {
+      const updated = await updateTransactionApi(
+        updatedTx._id,
+        updatedTx
+      );
+
+      setTransactions((prev) =>
+        prev.map((t) =>
+          t._id === updated._id
+            ? updated
+            : t
+        )
+      );
+    } catch (error) {
+      console.log("Update Transaction Error:", error);
+    }
+  };
+
+  // Delete Transaction
+  const deleteTransaction = async (id) => {
+    try {
+      await deleteTransactionApi(id);
+
+      setTransactions((prev) =>
+        prev.filter((t) => t._id !== id)
+      );
+    } catch (error) {
+      console.log("Delete Transaction Error:", error);
+    }
   };
 
   return (
-    <FinanceContext.Provider value={{ 
-      transactions, addTransaction, deleteTransaction, updateTransaction, 
-      role, setRole, theme, setTheme 
-    }}>
+    <FinanceContext.Provider
+      value={{
+        transactions,
+        addTransaction,
+        updateTransaction,
+        deleteTransaction,
+        role,
+        setRole,
+        theme,
+        setTheme,
+        fetchTransactions,
+      }}
+    >
       {children}
     </FinanceContext.Provider>
   );
 };
 
-export const useFinance = () => useContext(FinanceContext);
+export const useFinance = () =>
+  useContext(FinanceContext);
