@@ -38,7 +38,7 @@ const ProfilePage = () => {
             {user?.name}
           </h1>
 
-          <p className="text-gray-500">
+          <p className="text-gray-500 dark:text-gray-400">
             {user?.email}
           </p>
         </div>
@@ -48,17 +48,17 @@ const ProfilePage = () => {
       <div className="grid md:grid-cols-3 gap-6">
 
         <div className="bg-gray-50 dark:bg-gray-800 p-5 rounded-xl">
-          <h3 className="text-gray-500 text-sm">
+          <h3 className="text-gray-500 dark:text-gray-400 text-sm">
             Total Transactions
           </h3>
 
-          <p className="text-3xl font-bold mt-2">
+          <p className="text-3xl font-bold mt-2 dark:text-white">
             {totalTransactions}
           </p>
         </div>
 
         <div className="bg-gray-50 dark:bg-gray-800 p-5 rounded-xl">
-          <h3 className="text-gray-500 text-sm">
+          <h3 className="text-gray-500 dark:text-gray-400 text-sm">
             Total Income
           </h3>
 
@@ -68,7 +68,7 @@ const ProfilePage = () => {
         </div>
 
         <div className="bg-gray-50 dark:bg-gray-800 p-5 rounded-xl">
-          <h3 className="text-gray-500 text-sm">
+          <h3 className="text-gray-500 dark:text-gray-400 text-sm">
             Total Expenses
           </h3>
 

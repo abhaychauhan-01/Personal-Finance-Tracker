@@ -33,15 +33,13 @@ const InsightsPage = () => {
 
   return (
     <div className="space-y-6">
-
       <h1 className="text-3xl font-bold dark:text-white">
         Financial Insights
       </h1>
 
       <div className="grid md:grid-cols-2 gap-6">
-
-        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border">
-          <h3 className="text-gray-500 text-sm">
+        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-700">
+          <h3 className="text-gray-500 dark:text-gray-400 text-sm">
             Savings Rate
           </h3>
 
@@ -50,20 +48,20 @@ const InsightsPage = () => {
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border">
-          <h3 className="text-gray-500 text-sm">
+        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-700">
+          <h3 className="text-gray-500 dark:text-gray-400 text-sm">
             Top Expense Category
           </h3>
 
-          <p className="text-2xl font-bold mt-2">
+          <p className="text-2xl font-bold mt-2 dark:text-white">
             {topCategory
               ? topCategory[0]
               : "N/A"}
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border">
-          <h3 className="text-gray-500 text-sm">
+        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-700">
+          <h3 className="text-gray-500 dark:text-gray-400 text-sm">
             Total Income
           </h3>
 
@@ -72,8 +70,8 @@ const InsightsPage = () => {
           </p>
         </div>
 
-        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border">
-          <h3 className="text-gray-500 text-sm">
+        <div className="bg-white dark:bg-gray-900 p-6 rounded-2xl border border-gray-200 dark:border-gray-700">
+          <h3 className="text-gray-500 dark:text-gray-400 text-sm">
             Total Expenses
           </h3>
 
@@ -81,9 +79,7 @@ const InsightsPage = () => {
             ₹{expenses.toLocaleString()}
           </p>
         </div>
-
       </div>
-
     </div>
   );
 };

@@ -15,12 +15,12 @@ const TransactionsPage = ({
           Transactions List
         </h1>
 
-        <p className="text-gray-500 mt-1">
+        <p className="text-gray-500 dark:text-gray-400 mt-1">
           View and manage all your transactions.
         </p>
       </div>
 
-      <div className="bg-white dark:bg-gray-900 p-4 rounded-2xl border">
+      <div className="bg-white dark:bg-gray-900 p-4 rounded-2xl border border-gray-200 dark:border-gray-700">
 
         <input
           type="text"
@@ -36,8 +36,13 @@ const TransactionsPage = ({
             p-3
             rounded-xl
             border
-            dark:bg-gray-800
+            border-gray-300
             dark:border-gray-700
+            bg-white
+            dark:bg-gray-800
+            text-gray-900
+            dark:text-white
+            placeholder:text-gray-400
           "
         />
 

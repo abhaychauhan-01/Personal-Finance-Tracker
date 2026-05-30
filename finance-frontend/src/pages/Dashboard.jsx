@@ -12,21 +12,23 @@ import InsightsPage from "./InsightPage";
 import BudgetPage from "./BudgetPage";
 import TransactionsPage from "./TransactionsPage";
 import {
-LayoutDashboard,
-Receipt,
-Wallet,
-BarChart3,
-User,
-LogOut,
-Plus,
-Sun,
-Moon
+  LayoutDashboard,
+  Receipt,
+  Wallet,
+  BarChart3,
+  User,
+  LogOut,
+  Plus,
+  Sun,
+  Moon,
+  Menu,
 } from "lucide-react";
+
 
 const Dashboard = () => {
 const { theme, setTheme } = useFinance();
 const { logout, user } = useAuth();
-
+const [sidebarOpen, setSidebarOpen] = useState(false);
 const [isModalOpen, setIsModalOpen] = useState(false);
 const [activeTab, setActiveTab] = useState("overview");
 const [editingTransaction, setEditingTransaction] = useState(null);
@@ -69,21 +71,51 @@ value: "profile",
 },
 ];
 
-return ( <div className="h-screen flex bg-gray-50 dark:bg-gray-950">
-
-```
+return ( <div className="h-screen flex bg-gray-50 dark:bg-gray-950 overflow-hidden">
+   
+   {sidebarOpen && (
+  <div
+    className="fixed inset-0 bg-black/50 z-40 lg:hidden"
+    onClick={() => setSidebarOpen(false)}
+  />
+)}
   {/* SIDEBAR */}
-  <aside className="w-72 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 flex flex-col justify-between">
-
+<aside
+  className={`
+    fixed lg:static
+    top-0 left-0
+    h-screen
+    w-72
+    bg-white dark:bg-gray-900
+    border-r border-gray-200 dark:border-gray-800
+    flex flex-col justify-between
+    z-50
+    transition-transform duration-300
+    ${
+      sidebarOpen
+        ? "translate-x-0"
+        : "-translate-x-full lg:translate-x-0"
+    }
+  `}
+>
     <div>
       <div className="p-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
-          FinanceDash
-        </h1>
+        <div className="flex items-center justify-between">
+  <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+    FinanceDash
+  </h1>
 
-        <p className="text-sm text-gray-500 mt-1">
-          Personal Finance Tracker
-        </p>
+  <button
+    onClick={() => setSidebarOpen(false)}
+    className="lg:hidden text-gray-700 dark:text-white"
+  >
+    ✕
+  </button>
+</div>
+
+<p className="text-sm text-gray-500 mt-1">
+  Personal Finance Tracker
+</p>
       </div>
 
       <nav className="px-4 space-y-2">
@@ -93,7 +125,10 @@ return ( <div className="h-screen flex bg-gray-50 dark:bg-gray-950">
           return (
             <button
               key={item.value}
-              onClick={() => setActiveTab(item.value)}
+             onClick={() => {
+  setActiveTab(item.value);
+  setSidebarOpen(false);
+}}
               className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition ${
                 activeTab === item.value
                   ? "bg-blue-600 text-white"
@@ -145,9 +180,9 @@ return ( <div className="h-screen flex bg-gray-50 dark:bg-gray-950">
           {user?.name}
         </h3>
 
-        <p className="text-sm text-gray-500">
-          {user?.email}
-        </p>
+       <p className="text-sm text-gray-500 dark:text-gray-400">
+  {user?.email}
+</p>
       </div>
 
       <button
@@ -159,9 +194,16 @@ return ( <div className="h-screen flex bg-gray-50 dark:bg-gray-950">
       </button>
     </div>
   </aside>
+<main className="flex-1 overflow-y-auto p-4 md:p-8">
 
-  {/* MAIN CONTENT */}
-<main className="flex-1 overflow-y-auto p-8">
+  <div className="lg:hidden mb-6">
+    <button
+      onClick={() => setSidebarOpen(true)}
+      className="p-2 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white"
+    >
+      <Menu size={24} />
+    </button>
+  </div>
 
   {/* HEADER */}
   <div className="flex items-center justify-between mb-8">
@@ -178,23 +220,23 @@ return ( <div className="h-screen flex bg-gray-50 dark:bg-gray-950">
     : "Profile"}
 </h2>
 
-      <p className="text-gray-500">
-        Welcome back, {user?.name}
-      </p>
+     <p className="text-gray-500 dark:text-gray-400">
+  Welcome back, {user?.name}
+</p>
     </div>
 
     <button
-      onClick={handleCreateClick}
-      className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl transition"
-    >
+  onClick={handleCreateClick}
+  className="hidden sm:flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl transition"
+>
       <Plus size={18} />
       Add Transaction
     </button>
   </div>
 
   {/* CONTENT */}
-  <div className="flex gap-6">
-{/* CONTENT */}
+<div className="flex flex-col xl:flex-row gap-6">
+
 
 {activeTab === "profile" ? (
 
@@ -216,7 +258,7 @@ return ( <div className="h-screen flex bg-gray-50 dark:bg-gray-950">
 
 ) : (
 
-  <div className="flex gap-6">
+  <div className="flex flex-col xl:flex-row gap-6">
 
     {/* LEFT SIDE */}
     <div className="flex-1 space-y-6">
@@ -232,7 +274,7 @@ return ( <div className="h-screen flex bg-gray-50 dark:bg-gray-950">
     </div>
 
     {/* RIGHT SIDE */}
-    <div className="w-80 space-y-6">
+    <div className="w-full xl:w-80 space-y-6">
 
       <BudgetOverview />
 
