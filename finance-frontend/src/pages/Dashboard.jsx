@@ -225,13 +225,13 @@ return ( <div className="h-screen flex bg-gray-50 dark:bg-gray-950 overflow-hidd
 </p>
     </div>
 
-    <button
+   <button
   onClick={handleCreateClick}
   className="hidden sm:flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl transition"
 >
-      <Plus size={18} />
-      Add Transaction
-    </button>
+  <Plus size={18} />
+  Add Transaction
+</button>
   </div>
 
   {/* CONTENT */}
@@ -287,7 +287,27 @@ return ( <div className="h-screen flex bg-gray-50 dark:bg-gray-950 overflow-hidd
 )}
 </div>
     
-
+   {/* MOBILE FLOATING ADD BUTTON */}
+<button
+  onClick={handleCreateClick}
+  className="
+    fixed
+    bottom-6
+    right-6
+    sm:hidden
+    bg-blue-600
+    hover:bg-blue-700
+    text-white
+    p-4
+    rounded-full
+    shadow-lg
+    z-40
+    transition-all
+    duration-300
+  "
+>
+  <Plus size={24} />
+</button>
   <AddTransactionModal
     isOpen={isModalOpen}
     onClose={() =>
