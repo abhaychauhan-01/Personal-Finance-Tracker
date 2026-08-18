@@ -4,15 +4,24 @@ const API_URL =
   `${import.meta.env.VITE_API_URL}/api/transactions`;
 
 const getConfig = () => {
-  const userInfo = JSON.parse(
-    localStorage.getItem("userInfo")
-  );
+  try {
+    const userInfo = JSON.parse(
+      localStorage.getItem("userInfo") || "null"
+    );
 
-  return {
-    headers: {
-      Authorization: `Bearer ${userInfo.token}`,
-    },
-  };
+    if (!userInfo?.token) {
+      return {};
+    }
+
+    return {
+      headers: {
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+  } catch (error) {
+    localStorage.removeItem("userInfo");
+    return {};
+  }
 };
 
 // GET ALL
